@@ -20,32 +20,32 @@ public class ServiceRateThrottlerImpl implements ServiceRateThrottler {
     private Map<String, LinkedBlockingDeque<Long>> throttlers = new HashMap<String, LinkedBlockingDeque<Long>>();
 
     @Override
-    public void setupInvocationLimiter(final Invocation invocation) {
-        logger.debug("Setup invocationLimiter for " + invocation);
+    public void setupInvocationThrottler(final Invocation invocation) {
+        logger.debug("Setup invocationThrottler for " + invocation);
         throttlers.put(invocation.getInvoked(), new LinkedBlockingDeque<Long>());
     }
 
     @Override
-    public void purgeInvocationLimiter(final Invocation invocation) {
-        logger.debug("Purge invocationLimiter for " + invocation);
+    public void purgeInvocationThrottler(final Invocation invocation) {
+        logger.debug("Purge invocationThrottler for " + invocation);
         throttlers.get(invocation).clear();
     }
 
     @Override
-    public void dropInvocationLimiter(final Invocation invocation) {
-        logger.debug("Drop invocationLimiter for " + invocation);
+    public void dropInvocationThrottler(final Invocation invocation) {
+        logger.debug("Drop invocationThrottler for " + invocation);
         throttlers.remove(invocation);
     }
 
     @Override
-    public int reportActiveLimitersCount() {
-        logger.debug("Report all active limiters");
+    public int reportActiveThrottlerCount() {
+        logger.debug("Report all active throttlers");
         return throttlers.size();
     }
 
     @Override
-    public boolean existsInvocationLimiter(final Invocation invocation) {
-        logger.debug("Check existence of invocationLimiter for " + invocation);
+    public boolean existsInvocationThrottler(final Invocation invocation) {
+        logger.debug("Check existence of invocationThrottler for " + invocation);
         return throttlers.containsKey(invocation.getInvoked());
     }
 

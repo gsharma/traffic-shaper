@@ -30,7 +30,7 @@ public class ServiceRateThrottlerTest {
     public void testThrottleSeconds() {
         long bound = 50L;
         Invocation i = new Invocation("test", bound, 5L, WindowType.SECONDS);
-        rateThrottler.setupInvocationLimiter(i);
+        rateThrottler.setupInvocationThrottler(i);
         for (int iter = 1; iter <= 100; iter++) {
             if (rateThrottler.throttle(i)) {
                 assertTrue(iter >= 50);
@@ -42,7 +42,7 @@ public class ServiceRateThrottlerTest {
     public void testThrottleMinutes() {
         long bound = 1000L;
         Invocation i = new Invocation("test", bound, 1L, WindowType.MINUTES);
-        rateThrottler.setupInvocationLimiter(i);
+        rateThrottler.setupInvocationThrottler(i);
         for (int iter = 1; iter <= 2000; iter++) {
             if (rateThrottler.throttle(i)) {
                 assertTrue(iter >= 1000);
@@ -54,18 +54,18 @@ public class ServiceRateThrottlerTest {
     public void testStateSnapshotting() {
         long bound = 1000L;
         Invocation i = new Invocation("test", bound, 1L, WindowType.MINUTES);
-        rateThrottler.setupInvocationLimiter(i);
+        rateThrottler.setupInvocationThrottler(i);
         for (int iter = 1; iter <= 2000; iter++) {
             if (rateThrottler.throttle(i)) {
                 assertTrue(iter >= 1000);
             }
         }
 
-        int limitersPresnapshot = rateThrottler.reportActiveLimitersCount();
+        int limitersPresnapshot = rateThrottler.reportActiveThrottlerCount();
         String prePurgeSnapshot = rateThrottler.takeSnapshot();
         rateThrottler.purgeAllState();
         rateThrottler.reconstructFromSnapshot(prePurgeSnapshot);
-        assertEquals(limitersPresnapshot, rateThrottler.reportActiveLimitersCount());
+        assertEquals(limitersPresnapshot, rateThrottler.reportActiveThrottlerCount());
         assertEquals(prePurgeSnapshot, rateThrottler.takeSnapshot());
     }
 }

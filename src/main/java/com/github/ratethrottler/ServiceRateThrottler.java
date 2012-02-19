@@ -1,15 +1,15 @@
 package com.github.ratethrottler;
 
 public interface ServiceRateThrottler {
-    public void setupInvocationLimiter(final Invocation invocation);
+    public void setupInvocationThrottler(final Invocation invocation);
 
-    public void purgeInvocationLimiter(final Invocation invocation);
+    public void purgeInvocationThrottler(final Invocation invocation);
 
-    public void dropInvocationLimiter(final Invocation invocation);
+    public void dropInvocationThrottler(final Invocation invocation);
 
-    public int reportActiveLimitersCount();
+    public int reportActiveThrottlerCount();
 
-    public boolean existsInvocationLimiter(final Invocation invocation);
+    public boolean existsInvocationThrottler(final Invocation invocation);
 
     // handle with care
     public void purgeAllState();
