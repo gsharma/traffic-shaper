@@ -3,8 +3,15 @@
 ## Overview
 The Service Rate-throttler allows for customizable time-windowed rate throttling of any invocations (service/method/resource) in a selectable time-unit (hour/minute/second). An example use would be say we want to generate an event if our subscription service receives 20000 new user subscription messages in 3 seconds. Since throttling is in-memory but at the same time, we care for data reliability, there's full state-snapshotting available on-demand or pre-shutdown; similarly state-reconstruction happens at boot-time but is also available on-demand.  
 
-## Getting Started
+## Installing
 Either build from source <code>mvn clean install</code> or download the latest and greatest jar (https://github.com/gsharma/service-ratethrottler/downloads)  
+
+## Quick Start
+Assuming you dropped the ratethrottler jar in your classpath:  
+1. Create an instance <code>ServiceRateThrottler throttler = new ServiceRateThrottler();</code>  
+2. Create an invocation <code>Invocation invocation = new Invocation("dispatchPayment", 50000L, 5L, WindowType.SECONDS);</code>  
+3. Register invocation's interest with the throttler <code>throttler.setupInvocationThrottler(invocation);</code>  
+4. Tick the event at every invocation and watch outcome <code>boolean limitReached = throttler.throttle(invocation);</code>  
 
 ## API
 ### 1. Setup invocation throttler
