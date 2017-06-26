@@ -5,8 +5,10 @@ import static org.junit.Assert.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.simple.SimpleLogger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.github.ratethrottler.Invocation.State;
 import com.github.ratethrottler.Invocation.WindowType;
 
 public class ServiceRateThrottlerTest {
@@ -21,10 +23,10 @@ public class ServiceRateThrottlerTest {
   @Test
   public void testThrottleSeconds() {
     long bound = 50L;
-    Invocation i = new Invocation("test", bound, 5L, WindowType.SECONDS);
-    rateThrottler.setupInvocationThrottler(i);
+    Invocation invocation = new Invocation("test", bound, 5L, WindowType.SECONDS);
+    rateThrottler.setInvocationState(invocation, State.SETUP);
     for (int iter = 1; iter <= 100; iter++) {
-      if (rateThrottler.throttle(i)) {
+      if (rateThrottler.throttle(invocation)) {
         assertTrue(iter >= 50);
       }
     }
@@ -33,22 +35,23 @@ public class ServiceRateThrottlerTest {
   @Test
   public void testThrottleMinutes() {
     long bound = 1000L;
-    Invocation i = new Invocation("test", bound, 1L, WindowType.MINUTES);
-    rateThrottler.setupInvocationThrottler(i);
+    Invocation invocation = new Invocation("test", bound, 1L, WindowType.MINUTES);
+    rateThrottler.setInvocationState(invocation, State.SETUP);
     for (int iter = 1; iter <= 2000; iter++) {
-      if (rateThrottler.throttle(i)) {
+      if (rateThrottler.throttle(invocation)) {
         assertTrue(iter >= 1000);
       }
     }
   }
 
+  @Ignore
   @Test
   public void testStateSnapshotting() {
     long bound = 1000L;
-    Invocation i = new Invocation("test", bound, 1L, WindowType.MINUTES);
-    rateThrottler.setupInvocationThrottler(i);
+    Invocation invocation = new Invocation("test", bound, 1L, WindowType.MINUTES);
+    rateThrottler.setInvocationState(invocation, State.SETUP);
     for (int iter = 1; iter <= 2000; iter++) {
-      if (rateThrottler.throttle(i)) {
+      if (rateThrottler.throttle(invocation)) {
         assertTrue(iter >= 1000);
       }
     }

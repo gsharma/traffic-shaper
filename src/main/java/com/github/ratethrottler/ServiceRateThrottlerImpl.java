@@ -7,86 +7,75 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import com.github.ratethrottler.Invocation.State;
 import com.github.ratethrottler.Invocation.WindowType;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.util.JSON;
 
 public final class ServiceRateThrottlerImpl implements ServiceRateThrottler {
   private final static Logger logger = LogManager.getLogger(ServiceRateThrottlerImpl.class);
   private static final long ONE_NANO_SEC = 1000000000L;
-  private Map<String, LinkedBlockingDeque<Long>> throttlers =
+  private final Map<String, LinkedBlockingDeque<Long>> throttlers =
       new HashMap<String, LinkedBlockingDeque<Long>>();
 
   @Override
-  public void setupInvocationThrottler(final Invocation invocation) {
-    logger.debug("Setup invocationThrottler for " + invocation);
-    throttlers.put(invocation.getInvoked(), new LinkedBlockingDeque<Long>());
-  }
-
-  @Override
-  public void purgeInvocationThrottler(final Invocation invocation) {
-    logger.debug("Purge invocationThrottler for " + invocation);
-    throttlers.get(invocation).clear();
-  }
-
-  @Override
-  public void dropInvocationThrottler(final Invocation invocation) {
-    logger.debug("Drop invocationThrottler for " + invocation);
-    throttlers.remove(invocation);
+  public synchronized void setInvocationState(final Invocation invocation, final State state) {
+    logger.info(String.format("Switching invocationThrottler %s to %s state",
+        invocation.getInvoked(), state));
+    switch (state) {
+      case SETUP:
+        throttlers.put(invocation.getId(), new LinkedBlockingDeque<Long>());
+        break;
+      case PURGE:
+        throttlers.get(invocation.getId()).clear();
+        break;
+      case DROP:
+        throttlers.remove(invocation.getId());
+        break;
+    }
   }
 
   @Override
   public int reportActiveThrottlerCount() {
-    logger.debug("Report all active throttlers");
+    if (logger.isDebugEnabled()) {
+      logger.debug("Report all active throttlers");
+    }
     return throttlers.size();
   }
 
   @Override
   public boolean existsInvocationThrottler(final Invocation invocation) {
-    logger.debug("Check existence of invocationThrottler for " + invocation);
-    return throttlers.containsKey(invocation.getInvoked());
+    if (logger.isDebugEnabled()) {
+      logger.debug("Check existence of invocationThrottler for " + invocation);
+    }
+    return throttlers.containsKey(invocation.getId());
   }
 
-  // handle with care
   @Override
   public void purgeAllState() {
-    logger.debug("Purge all service ratethrottler state");
+    if (logger.isDebugEnabled()) {
+      logger.debug("Purge all service ratethrottler state");
+    }
     throttlers.clear();
   }
 
-  // @PreDestroy and push to mongo
   @Override
   public synchronized String takeSnapshot() {
-    logger.debug("Take active state snapshot");
-    String snapshot = JSON.serialize(throttlers);
-    return snapshot;
+    // TODO
+    return null;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public synchronized void reconstructFromSnapshot(String snapshot) {
+    // TODO
     logger.debug("Reconstruct from snapshot: " + snapshot);
-    BasicDBObject deserialized = (BasicDBObject) JSON.parse(snapshot);
-    if (deserialized == null) {
-      return;
-    }
-    Map<String, BasicDBList> bsonMap = deserialized.toMap();
-    throttlers = new HashMap<String, LinkedBlockingDeque<Long>>(bsonMap.size());
-    for (Map.Entry<String, BasicDBList> entry : bsonMap.entrySet()) {
-      BasicDBList dequeSnapshot = entry.getValue();
-      LinkedBlockingDeque<Long> deque = new LinkedBlockingDeque<Long>(dequeSnapshot.size());
-      for (Long tstamp : dequeSnapshot.toArray(new Long[dequeSnapshot.size()])) {
-        deque.addLast(tstamp);
-      }
-      throttlers.put(entry.getKey(), deque);
-    }
+    return;
   }
 
   @Override
   public boolean throttle(final Invocation invocation) {
-    logger.debug("Throttle " + invocation);
-    LinkedBlockingDeque<Long> invocationThrottler = throttlers.get(invocation.getInvoked());
+    if (logger.isDebugEnabled()) {
+      logger.debug("Throttle " + invocation);
+    }
+    LinkedBlockingDeque<Long> invocationThrottler = throttlers.get(invocation.getId());
     if (invocationThrottler == null) {
       throw new IllegalArgumentException("First configure the invocation before using it");
     }

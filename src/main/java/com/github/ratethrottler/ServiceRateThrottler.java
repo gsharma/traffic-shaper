@@ -1,11 +1,10 @@
 package com.github.ratethrottler;
 
+import com.github.ratethrottler.Invocation.State;
+
 public interface ServiceRateThrottler {
-  public void setupInvocationThrottler(final Invocation invocation);
 
-  public void purgeInvocationThrottler(final Invocation invocation);
-
-  public void dropInvocationThrottler(final Invocation invocation);
+  public void setInvocationState(final Invocation invocation, final State state);
 
   public int reportActiveThrottlerCount();
 

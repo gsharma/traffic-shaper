@@ -1,20 +1,32 @@
 package com.github.ratethrottler;
 
+import java.util.UUID;
+
 public final class Invocation {
-  private String invoked;
-  private long bound;
-  private long window;
-  private WindowType windowType;
+  private final String invoked;
+  private final long bound;
+  private final long window;
+  private final WindowType windowType;
+  private final String id;
 
   public static enum WindowType {
     SECONDS, MINUTES, HOURS
   }
 
+  public static enum State {
+    SETUP, PURGE, DROP
+  }
+
   public Invocation(String invoked, long bound, long window, WindowType windowType) {
+    this.id = UUID.randomUUID().toString();
     this.invoked = invoked;
     this.bound = bound;
     this.window = window;
     this.windowType = windowType;
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getInvoked() {
@@ -36,8 +48,8 @@ public final class Invocation {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("Invocation [invoked=").append(invoked).append(", bound=").append(bound)
-        .append(", window=").append(window).append("]");
+    builder.append("Invocation [id=").append(id).append(", invoked=").append(invoked)
+        .append(", bound=").append(bound).append(", window=").append(window).append("]");
     return builder.toString();
   }
 }
