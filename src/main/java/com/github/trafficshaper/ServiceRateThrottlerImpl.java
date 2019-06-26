@@ -1,14 +1,15 @@
-package com.github.ratethrottler;
+package com.github.trafficshaper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
-import com.github.ratethrottler.Invocation.State;
-import com.github.ratethrottler.Invocation.WindowType;
+import com.github.trafficshaper.Invocation.State;
+import com.github.trafficshaper.Invocation.WindowType;
+
+import org.apache.logging.log4j.LogManager;
 
 public final class ServiceRateThrottlerImpl implements ServiceRateThrottler {
   private final static Logger logger = LogManager.getLogger(ServiceRateThrottlerImpl.class);

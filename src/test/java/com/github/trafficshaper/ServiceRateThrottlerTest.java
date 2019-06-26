@@ -1,4 +1,4 @@
-package com.github.ratethrottler;
+package com.github.trafficshaper;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.github.ratethrottler.Invocation.State;
-import com.github.ratethrottler.Invocation.WindowType;
+import com.github.trafficshaper.Invocation;
+import com.github.trafficshaper.ServiceRateThrottler;
+import com.github.trafficshaper.ServiceRateThrottlerImpl;
+import com.github.trafficshaper.Invocation.State;
+import com.github.trafficshaper.Invocation.WindowType;
 
 public class ServiceRateThrottlerTest {
   private ServiceRateThrottler rateThrottler;

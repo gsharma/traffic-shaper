@@ -1,6 +1,6 @@
-package com.github.ratethrottler;
+package com.github.trafficshaper;
 
-import com.github.ratethrottler.Invocation.State;
+import com.github.trafficshaper.Invocation.State;
 
 public interface ServiceRateThrottler {
 

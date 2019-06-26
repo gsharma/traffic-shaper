@@ -1,4 +1,4 @@
-package com.github.ratethrottler;
+package com.github.trafficshaper;
 
 import java.util.UUID;
 
