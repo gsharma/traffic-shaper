@@ -7,4 +7,6 @@ package com.github.trafficshaper;
  */
 public class TrafficShaper {
 
+  public enum Policy {
+  }
 }
