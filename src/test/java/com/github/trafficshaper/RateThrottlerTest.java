@@ -9,18 +9,18 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.trafficshaper.Invocation;
-import com.github.trafficshaper.ServiceRateThrottler;
-import com.github.trafficshaper.ServiceRateThrottlerImpl;
+import com.github.trafficshaper.RateThrottler;
+import com.github.trafficshaper.RateThrottlerImpl;
 import com.github.trafficshaper.Invocation.State;
 import com.github.trafficshaper.Invocation.WindowType;
 
-public class ServiceRateThrottlerTest {
-  private ServiceRateThrottler rateThrottler;
+public class RateThrottlerTest {
+  private RateThrottler rateThrottler;
 
   @Before
   public void init() {
     LogManager.getLogger(SimpleLogger.class);
-    rateThrottler = new ServiceRateThrottlerImpl();
+    rateThrottler = new RateThrottlerImpl();
   }
 
   @Test

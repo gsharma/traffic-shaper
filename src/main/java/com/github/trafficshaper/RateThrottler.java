@@ -2,7 +2,7 @@ package com.github.trafficshaper;
 
 import com.github.trafficshaper.Invocation.State;
 
-public interface ServiceRateThrottler {
+public interface RateThrottler {
 
   public void setInvocationState(final Invocation invocation, final State state);
 

@@ -11,8 +11,8 @@ import com.github.trafficshaper.Invocation.WindowType;
 
 import org.apache.logging.log4j.LogManager;
 
-public final class ServiceRateThrottlerImpl implements ServiceRateThrottler {
-  private final static Logger logger = LogManager.getLogger(ServiceRateThrottlerImpl.class);
+public final class RateThrottlerImpl implements RateThrottler {
+  private final static Logger logger = LogManager.getLogger(RateThrottlerImpl.class);
   private static final long ONE_NANO_SEC = 1000000000L;
   private final Map<String, LinkedBlockingDeque<Long>> throttlers =
       new HashMap<String, LinkedBlockingDeque<Long>>();
@@ -53,7 +53,7 @@ public final class ServiceRateThrottlerImpl implements ServiceRateThrottler {
   @Override
   public void purgeAllState() {
     if (logger.isDebugEnabled()) {
-      logger.debug("Purge all service ratethrottler state");
+      logger.debug("Purge all ratethrottler state");
     }
     throttlers.clear();
   }
