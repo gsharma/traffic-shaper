@@ -5,6 +5,8 @@ The Traffic Shaper allows for customizable time-windowed rate throttling of any 
 
 Since throttling is in-memory but at the same time, we care for data reliability, there's full state-snapshotting available on-demand or pre-shutdown; similarly state-reconstruction happens at boot-time but is also available on-demand.  
 
+Two modes of traffic shaping are supported via Leaky and Token buckets.
+
 
 ## Quick Start
 Assuming you dropped the ratethrottler jar in your classpath:  
