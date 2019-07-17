@@ -66,4 +66,21 @@ public class RateThrottlerTest {
     assertEquals(limitersPresnapshot, rateThrottler.reportActiveThrottlerCount());
     assertEquals(prePurgeSnapshot, rateThrottler.takeSnapshot());
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testThrottleDrop() {
+    long bound = 50L;
+    Invocation invocation = new Invocation("test", bound, 5L, WindowType.SECONDS);
+    rateThrottler.setInvocationState(invocation, State.SETUP);
+    assertEquals(1, rateThrottler.reportActiveThrottlerCount());
+    for (int iter = 1; iter <= 100; iter++) {
+      if (rateThrottler.throttle(invocation)) {
+        assertTrue(iter >= 50);
+      }
+    }
+    rateThrottler.setInvocationState(invocation, State.DROP);
+    assertEquals(0, rateThrottler.reportActiveThrottlerCount());
+    rateThrottler.throttle(invocation);
+  }
+
 }
