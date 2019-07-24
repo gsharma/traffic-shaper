@@ -1,7 +1,7 @@
 # Traffic Shaper
 
 ## Overview
-The Traffic Shaper allows for customizable time-windowed (both sliding and tumbling windows) rate throttling of any invocations in a selectable time-unit (hour/minute/second). An example use would be say we want to generate an event if our subscription service receives 20000 new user subscription messages in 3 seconds. 
+The Traffic Shaper allows for customizable time-windowed (both sliding and tumbling windows) traffic shaping (eg. rate throttling of any invocations in a selectable time-unit). An example use would be say we want to generate an event if our subscription service receives 20000 new user subscription messages in 3 seconds. 
 
 Since throttling is in-memory but at the same time, we care for data reliability, there's full state-snapshotting available on-demand or pre-shutdown; similarly state-reconstruction happens at boot-time but is also available on-demand.  
 
