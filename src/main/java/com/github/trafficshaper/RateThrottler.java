@@ -2,6 +2,11 @@ package com.github.trafficshaper;
 
 import com.github.trafficshaper.Invocation.State;
 
+/**
+ * A simple rate throttler.
+ * 
+ * @author gaurav
+ */
 public interface RateThrottler {
 
   public void setInvocationState(final Invocation invocation, final State state);
@@ -18,4 +23,5 @@ public interface RateThrottler {
   public void reconstructFromSnapshot(String snapshot);
 
   public boolean throttle(final Invocation invocation);
+
 }
