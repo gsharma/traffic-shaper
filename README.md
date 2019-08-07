@@ -8,7 +8,7 @@ Since throttling is in-memory but at the same time, we care for data reliability
 Two modes of traffic shaping are supported via Leaky and Token buckets.
 
 
-## Quick Start
+## Quick Start - Rate Throttler
 Assuming you dropped the ratethrottler jar in your classpath:  
 1. Create an instance <code>ServiceRateThrottler throttler = new ServiceRateThrottler();</code>  
 2. Create an invocation <code>Invocation invocation = new Invocation("dispatchPayment", 50000L, 5L, WindowType.SECONDS);</code>  
